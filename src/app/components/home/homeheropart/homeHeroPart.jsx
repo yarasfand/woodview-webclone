@@ -6,6 +6,7 @@ import { scrolledTo } from "../../../controller/storefeatures/storeFeatures";
 import "./homeheropart.css";
 import ReactPlayer from "react-player";
 import MegaScroll from "react-mega-scroll";
+import Image from "next/image";
 
 const HomeHeroPart = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -26,6 +27,53 @@ const HomeHeroPart = () => {
     { number: 9, length: 900, price: "360.000" },
     { number: 10, length: 900, price: "360.000" },
     { number: 11, length: 900, price: "360.000" },
+  ];
+
+  const scrollAbleLeftContent = [
+    {
+      title: "Schools",
+      iconSrc: "/education-icon.svg",
+      schools: [
+        "St. John Catholic Elementary School",
+        "St. Mark",
+        "Public School",
+        "Senator Gibson",
+        "Beamsville",
+        "Great Lakes Christian",
+      ],
+    },
+    {
+      title: "Parks",
+      iconSrc: "/tree-icon.svg",
+      schools: [
+        "Bruce trail",
+        "Angelina Macri Prokich park",
+        "Niagara Escarpment",
+        "Beamsville Lions",
+      ],
+    },
+    {
+      title: "Restaurants",
+      iconSrc: "/tray-icon.svg",
+      schools: [
+        "August Restaurant",
+        "Gigi’s Pizza House",
+        "Conversations Cafe",
+        "Beamsville Farmers Market",
+        "Beamsville Town Centre",
+      ],
+    },
+    {
+      title: "Wineries",
+      iconSrc: "/wine-icon.svg",
+      schools: [
+        "Peninsula Ridge Estates",
+        "Rosewood Estates Winery",
+        "Organized Crime Winery",
+        "The Good Earth Food & Wine Co.",
+        "Fielding Estate Winer",
+      ],
+    },
   ];
 
   useEffect(() => {
@@ -67,7 +115,11 @@ const HomeHeroPart = () => {
         </div>
       ) : (
         <div className="alternativeContentDiv">
-          <MegaScroll onChange={setActive} threshold={0.01}>
+          <MegaScroll
+            onChange={setActive}
+            threshold={0.01}
+            className="megaScrollHeroPart"
+          >
             <section className="landingPageFirstVideoContentContainer relative z-10">
               <div className="landingPageFirstVideoContentSubContainer ">
                 <div className="landingPageFirstVideoContentSubSubContainer flex">
@@ -211,7 +263,47 @@ const HomeHeroPart = () => {
                 </div>
               </div> */}
             </section>
+            <section className="landingPageThirdSectionContainer relative z-10">
+            <h2>Main amenities</h2>
+              <div className="landingPageThirdSectionSubContainer">
+                
+                <div className="landingPageThirdSectionLeftContainer">
+                  <div className="landingPageThirdSectionLeftTextContainer">
+                    <h2 className="landingPageThirdSectionLeftContainerHeading">
+                      Main amenities
+                    </h2>
+                  </div>
+
+                  <div className="landingPageThirdSectionScrollContentContainer">
+                    {scrollAbleLeftContent.map((section, index) => (
+                      <ScrollAbleContent
+                        key={index}
+                        iconSrc={section.iconSrc}
+                        title={section.title}
+                        schools={section.schools}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="landingPageThirdSectionRightImageContainer">
+                  <div className="landingPageThirdSectionRightColouredImageMapDiv">
+                    <Image
+                      src="/coloured-map.avif"
+                      alt="Colored Map"
+                      width={800}
+                      height={600}
+                      quality={100}
+                      className="landingPageThirdSectionRightColouredImageMap"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
           </MegaScroll>
+
+
+          
         </div>
       )}
     </section>
@@ -248,6 +340,24 @@ const PlotEntry = ({ number, length, price, status }) => {
             )}
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const ScrollAbleContent = ({ iconSrc, title, schools }) => {
+  return (
+    <div className="landingPageThirdSectionScrollingContentEntryContainer">
+      <div>
+        <img src={iconSrc} alt={`${title} icon`} />
+      </div>
+      <div className="landingPageThirdSectionScrollingEntryContent">
+        <h4>{title}</h4>
+        <ul>
+          {schools.map((school, index) => (
+            <li key={index}>{school}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -72,7 +72,7 @@ const HomeHeroBgVideos = () => {
 
 
     return(
-        <div className="heroBgVideoContainer absolute top-0 z-[1] w-[100vw] h-[100vh] cursor-default pointer-events-none">
+        <div className="heroBgVideoContainer absolute top-0 z-[1] w-full h-full cursor-default pointer-events-none">
       {videos.map((video, index) => (
         <video
           key={video}
