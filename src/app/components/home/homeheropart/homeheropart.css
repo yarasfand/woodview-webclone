@@ -26,6 +26,7 @@
 
 .alternativeContentDiv {
     height: 100vh;
+    width: 100%;
     overflow: auto;
     z-index: 2;
 }
@@ -195,6 +196,7 @@
     --scrollbar-width: 0.5rem;
     overflow-y: scroll;
     padding-right: 0.5rem;
+    
 }
 
 .plotTablePlotsSingleEntryContainer {
@@ -275,11 +277,27 @@
 }
 
 .plotsNumbersContainer {
-    position: fixed;
-    width: 60%;
-    height: 100vh;
+  position: absolute;
+}
+
+.plotsNumbersContainer1{
     top: 0px;
-    right: 0px;
+    right: 12% ;
+}
+
+.plotsNumbersContainer2{
+    top: 3%;
+    right: 19%;
+}
+
+.plotsNumbersContainer3{
+    top: 8%;
+    right: 26%;
+}
+
+.plotsNumbersContainer4{
+    top: 12%;
+    right: 51%;
 }
 
 .plotsNumbersSubContainer {
@@ -351,7 +369,7 @@
     background-color: rgb(235 228 208 / var(--tw-bg-opacity));
     margin-top: 0px;
     height: 100vh !important;
-    width: 100%;
+    width: 100vw;
 }
 
 .landingPageThirdSectionSubContainer {
@@ -359,6 +377,7 @@
     display: flex;
     max-width: none;
     flex-direction: row;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     padding: 0px;
@@ -487,9 +506,11 @@
     width: 100%;
 
 }
-.landingPageThirdSectionContainer > h2 {
+
+.landingPageThirdSectionContainer>h2 {
     display: none;
 }
+
 
 @media (max-width: 850px) {
     .landingPageFirstVideoContentDiv {
@@ -527,11 +548,11 @@
         padding-top: 2rem;
     }
 
-    .landingPageThirdSectionLeftContainerHeading{
+    .landingPageThirdSectionLeftContainerHeading {
         display: none;
     }
 
-    .landingPageThirdSectionContainer > h2 {
+    .landingPageThirdSectionContainer>h2 {
         color: rgb(65, 16, 35);
         font-family: Montserrat, sans-serif;
         line-height: 110%;

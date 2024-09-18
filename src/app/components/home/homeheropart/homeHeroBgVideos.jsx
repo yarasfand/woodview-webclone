@@ -57,7 +57,7 @@ const HomeHeroBgVideos = () => {
       }
   
       if (scrollPage === 2) {
-        setCurrentVideoIndex(4);
+        setCurrentVideoIndex(3);
         setPrevScrollPage(scrollPage);
       }
     }, [scrollPage, prevScrollPage]);
@@ -80,7 +80,10 @@ const HomeHeroBgVideos = () => {
           src={video}
           className={`w-full object-cover h-full ${
             index === currentVideoIndex ? "" : "hidden"
-          }`}
+          }
+           ${currentVideoIndex === 3
+            ? "object-fill"
+            : "object-cover"}`}         
           autoPlay
           muted
           loop
