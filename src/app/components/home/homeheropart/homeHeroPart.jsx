@@ -1,8 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useAppDispatch } from "../../../controller/storefeatures/hooks";
-import { scrolledTo } from "../../../controller/storefeatures/storeFeatures";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../controller/storefeatures/hooks";
+import {
+  scrolledTo,
+  setPlotNumber,
+  usePlotNumber,
+} from "../../../controller/storefeatures/storeFeatures";
 import "./homeheropart.css";
 import ReactPlayer from "react-player";
 import Link from "next/link";
@@ -28,6 +35,13 @@ const HomeHeroPart = () => {
     { number: 9, length: 900, price: "360.000", link: "/plot-9" },
     { number: 10, length: 900, price: "360.000", link: "/plot-10" },
     { number: 11, length: 900, price: "360.000", link: "/plot-11" },
+  ];
+
+  const plotsPointsData = [
+    { number: 1, url: "/plots/plot-1" },
+    { number: 2, url: "/plots/plot-2" },
+    { number: 3, url: "/plots/plot-3" },
+    { number: 4, url: "/plots/plot-4" }, // Fixed URL for plot 4
   ];
 
   const scrollAbleLeftContent = [
@@ -77,6 +91,8 @@ const HomeHeroPart = () => {
     },
   ];
 
+  const plotNumber = useAppSelector(usePlotNumber);
+
   useEffect(() => {
     // console.log("Scrolled to ", active)
     dispatch(scrolledTo(active));
@@ -102,6 +118,16 @@ const HomeHeroPart = () => {
   if (!isMounted) {
     return null;
   }
+
+  const handleMouseEnter = (no) => {
+    console.log("Setting plot number to:", no);
+    dispatch(setPlotNumber(no));
+  };
+
+  const handleMouseLeave = () => {
+    console.log("Resetting plot number to 0");
+    dispatch(setPlotNumber(0));
+  };
 
   return (
     <section>
@@ -218,155 +244,116 @@ const HomeHeroPart = () => {
 
                   <div className="plotTablePlotsListContainer">
                     {plots.map((plot) => (
-                       <PlotEntry
-                       key={plot.number}
-                       number={plot.number}
-                       length={plot.length}
-                       price={plot.price}
-                       status={plot.status}
-                       link={`/plots${plot.link}`}
-                     />
-                   ))}
+                      <PlotEntry
+                        key={plot.number}
+                        number={plot.number}
+                        length={plot.length}
+                        price={plot.price}
+                        status={plot.status}
+                        link={`/plots${plot.link}`}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <div className="plotsNumbersContainer plotsNumbersContainer1">
-                <div className="plotsNumbersSubContainer">
-                  <div className="plotNumber1Container">
-                    <div className="plotNumberBgContainer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="39"
-                        height="38"
-                        fill="none"
+              {plotsPointsData.map(({ number, url }) => (
+                <div
+                  key={number}
+                  className={`plotsNumbersContainer plotsNumbersContainer${number}`}
+                >
+                  <div className="plotsNumbersSubContainer">
+                    <div className="plotNumber1Container">
+                      <Link
+                        href={url}
+                        className={
+                          plotNumber === number
+                            ? "plotNumberBgContainerhover"
+                            : "plotNumberBgContainer"
+                        }
+                        onMouseEnter={() => handleMouseEnter(number)}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={() => handleMouseLeave(number)}
                       >
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="18.172"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.15"
-                        ></circle>
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="13.474"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.3"
-                        ></circle>
-                        <circle cx="19.537" cy="19" r="10" fill="#fff"></circle>
-                      </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="39"
+                          height="38"
+                          fill="none"
+                        >
+                          <circle
+                            cx="19.537"
+                            cy="19"
+                            r="18.172"
+                            fill="#fff"
+                            fillOpacity="0.8"
+                            opacity="0.15"
+                          />
+                          <circle
+                            cx="19.537"
+                            cy="19"
+                            r="13.474"
+                            fill="#fff"
+                            fillOpacity="0.8"
+                            opacity="0.3"
+                          />
+                          <circle cx="19.537" cy="19" r="10" fill="#fff" />
+                        </svg>
+                      </Link>
+                      <span
+                        className={
+                          plotNumber === number
+                            ? "plotNumberSpanHover"
+                            : "plotNumberSpan"
+                        }
+                      >
+                        {number}
+                      </span>
                     </div>
-                    <span className="plotNumberSpan">1 </span>
                   </div>
                 </div>
-              </div>
-
-              <div className=" plotsNumbersContainer plotsNumbersContainer2">
-                <div className="plotsNumbersSubContainer">
-                  <div className="plotNumber1Container">
-                    <div className="plotNumberBgContainer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="39"
-                        height="38"
-                        fill="none"
-                      >
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="18.172"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.15"
-                        ></circle>
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="13.474"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.3"
-                        ></circle>
-                        <circle cx="19.537" cy="19" r="10" fill="#fff"></circle>
-                      </svg>
-                    </div>
-                    <span className="plotNumberSpan">2 </span>
-                  </div>
+              ))}
+            </section>
+            <section className="landingPageThirdSectionMobileContainer relative z-10">
+              <div className="landingPageThirdSectionMobileSubContainer">
+                <div className="thirdSectionMobileTableHeading">
+                  <h6>Name</h6>
+                  <h6>PLOT AREA, ft²</h6>
+                  <h6>PRICE, USD</h6>
                 </div>
-              </div>
 
-              <div className="plotsNumbersContainer plotsNumbersContainer3">
-                <div className="plotsNumbersSubContainer">
-                  <div className="plotNumber1Container">
-                    <div className="plotNumberBgContainer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="39"
-                        height="38"
-                        fill="none"
-                      >
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="18.172"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.15"
-                        ></circle>
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="13.474"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.3"
-                        ></circle>
-                        <circle cx="19.537" cy="19" r="10" fill="#fff"></circle>
-                      </svg>
-                    </div>
-                    <span className="plotNumberSpan">3 </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="plotsNumbersContainer plotsNumbersContainer4">
-                <div className="plotsNumbersSubContainer">
-                  <div className="plotNumber1Container">
-                    <div className="plotNumberBgContainer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="39"
-                        height="38"
-                        fill="none"
-                      >
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="18.172"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.15"
-                        ></circle>
-                        <circle
-                          cx="19.537"
-                          cy="19"
-                          r="13.474"
-                          fill="#fff"
-                          fillOpacity="0.8"
-                          opacity="0.3"
-                        ></circle>
-                        <circle cx="19.537" cy="19" r="10" fill="#fff"></circle>
-                      </svg>
-                    </div>
-                    <span className="plotNumberSpan">4 </span>
-                  </div>
+                <div className="thirdSectionMobileTableEntries">
+                  {plots.map((plot) => (
+                    <Link href={`/plots${plot.link}`} key={plot.number}>
+                      <div className="thirdSectionMobileTableEntrieContainer">
+                        <div className="thirdSectionMobileTableEntrieSubContainer">
+                          <div className="thirdSectionMobileTableEntrieSubSubContainer">
+                            <div className="thirdSectionMobileTableEntrieId">
+                              {plot.number}
+                            </div>
+                            <div className="thirdSectionMobileTableEntrieLength">
+                              {plot.length} ft²
+                            </div>
+                            {plot.status ? (
+                              <div className="thirdSectionEntryStatusDiv">
+                                <div className="thirdSectionEntryStatus">
+                                  {plot.status}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="thirdSectionEntryNumber">
+                                ${plot.price}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </section>
+
             <section className="landingPageThirdSectionContainer relative z-10">
               <h2>Main amenities</h2>
               <div className="landingPageThirdSectionSubContainer">
@@ -413,17 +400,53 @@ const HomeHeroPart = () => {
 export { HomeHeroPart };
 
 const PlotEntry = ({ number, length, price, status, link }) => {
+  const dispatch = useAppDispatch();
+  const plotNumber = useAppSelector(usePlotNumber);
+
+  const handleMouseEnter = () => {
+    console.log("Setting plot number to:", number);
+    dispatch(setPlotNumber(number));
+  };
+
+  const handleMouseLeave = () => {
+    console.log("Resetting plot number to 0");
+    dispatch(setPlotNumber(0));
+  };
+
   return (
     <div className="plotTablePlotsListSubContainer">
-      <div className="plotTablePlotsSingleEntryContainer">
-      
-          <Link href={link} className="plotTablePlotsSingleEntrySubContainer">
+      <div
+        className={
+          plotNumber === number
+            ? "plotTablePlotsSingleEntryContainerHover"
+            : "plotTablePlotsSingleEntryContainer"
+        }
+      >
+        <Link
+          href={link}
+          className="plotTablePlotsSingleEntrySubContainer"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => handleMouseLeave(number)}
+        >
           <div className="plotTablePlotsSingleEntrySubSubContainer">
-            <div className="plotTablePlotsSingleEntryNumber">
+            <div
+              className={
+                plotNumber === number
+                  ? "plotTablePlotsSingleEntryNumberHover"
+                  : "plotTablePlotsSingleEntryNumber"
+              }
+            >
               {" "}
               <p>{number} </p>
             </div>
-            <div className="plotTablePlotsSingleEntryLength">
+            <div
+              className={
+                plotNumber === number
+                  ? "plotTablePlotsSingleEntryLengthHover"
+                  : "plotTablePlotsSingleEntryLength"
+              }
+            >
               <p> {length} ft² </p>
             </div>
             {status ? (
@@ -434,16 +457,19 @@ const PlotEntry = ({ number, length, price, status, link }) => {
               </div>
             ) : (
               <div className="plotTablePlotsSingleEntryPrice">
-                <div className="plotTablePlotsSingleEntryPriceDiv">
+                <div
+                  className={
+                    plotNumber === number
+                      ? "plotTablePlotsSingleEntryPriceDivHover"
+                      : "plotTablePlotsSingleEntryPriceDiv"
+                  }
+                >
                   <p> ${price} </p>
                 </div>
               </div>
             )}
           </div>
-          </Link>
-       
-
-
+        </Link>
       </div>
     </div>
   );
