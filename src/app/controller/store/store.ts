@@ -1,4 +1,4 @@
-import { configureStore, compose, applyMiddleware } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { landingSliceReducer } from '../storefeatures/storeFeatures'
 
 // const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
